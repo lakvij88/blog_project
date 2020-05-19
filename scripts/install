@@ -1,0 +1,15 @@
+#!/bin/sh -ex
+
+if [ "${CONTINUOUS_INTEGRATION}" = "true" ]; then
+    BIN_PATH=""
+else
+    rm -rf venv
+    virtualenv venv --python=python3.6
+    BIN_PATH="venv/bin/"
+fi
+
+if ! [ -f .env ] ; then
+    echo "DEBUG=true" > .env
+fi
+
+${BIN_PATH}pip install -U -r requirements.txt
