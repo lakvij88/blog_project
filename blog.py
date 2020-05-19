@@ -1,8 +1,8 @@
 from flask import Flask, url_for, render_template
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///test.db"
 db = SQLAlchemy(app)
 
 
@@ -16,7 +16,8 @@ class User(db.Model):
         self.email = email
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return "<User %r>" % self.username
+
 
 from datetime import datetime
 
@@ -27,9 +28,8 @@ class Post(db.Model):
     body = db.Column(db.Text)
     pub_date = db.Column(db.DateTime)
 
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-    category = db.relationship('Category',
-        backref=db.backref('posts', lazy='dynamic'))
+    category_id = db.Column(db.Integer, db.ForeignKey("category.id"))
+    category = db.relationship("Category", backref=db.backref("posts", lazy="dynamic"))
 
     def __init__(self, title, body, category, pub_date=None):
         self.title = title
@@ -40,7 +40,7 @@ class Post(db.Model):
         self.category = category
 
     def __repr__(self):
-        return '<Post %r>' % self.title
+        return "<Post %r>" % self.title
 
 
 class Category(db.Model):
@@ -51,16 +51,18 @@ class Category(db.Model):
         self.name = name
 
     def __repr__(self):
-        return '<Category %r>' % self.name
+        return "<Category %r>" % self.name
 
 
 @app.route("/")
 def index():
-	return render_template('index.html')
+    return render_template("index.html")
+
 
 @app.route("/admin")
 def admin():
-	return render_template('admin.html')
+    return render_template("admin.html")
 
-if __name__=="__main__":
-	app.run(debug=True)
+
+if __name__ == "__main__":
+    app.run(debug=True)
